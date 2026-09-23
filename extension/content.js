@@ -21,7 +21,12 @@
 
   function loadSettings(cb) {
     try {
-      chrome.storage.local.get(settings, (s) => { Object.assign(settings, s); cb(); });
+      chrome.storage.local.get(settings, (s) => {
+        Object.assign(settings, s);
+        // On/off (Alt+M) only lasts for the current page, so the skin can't get stuck off.
+        settings.enabled = true;
+        cb();
+      });
     } catch { cb(); }
   }
   function saveSettings() {

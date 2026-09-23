@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Monkeytype for TypeRacer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Race on TypeRacer in a full-screen Monkeytype-style typing UI. Real keystrokes, real races.",
   "homepage_url": "https://github.com/ngelkind/typeracer-monkeytype",
   "permissions": [
