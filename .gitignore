@@ -1,0 +1,7 @@
+.DS_Store
+.idea/
+.venv/
+__pycache__/
+# local PyCharm scaffolding, not part of the extension
+main.py
+pyproject.toml

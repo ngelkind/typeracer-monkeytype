@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Monkeytype for TypeRacer",
+  "version": "1.0.0",
+  "description": "Race on TypeRacer in a full-screen Monkeytype-style typing UI. Real keystrokes, real races.",
+  "homepage_url": "https://github.com/ngelkind/typeracer-monkeytype",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://play.typeracer.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "monkey.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "fonts/RobotoMono.woff2"
+      ],
+      "matches": [
+        "https://play.typeracer.com/*"
+      ]
+    }
+  ]
+}

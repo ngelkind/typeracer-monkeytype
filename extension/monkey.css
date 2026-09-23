@@ -1,0 +1,197 @@
+/* Monkeytype for TypeRacer
+ * Copyright (C) 2026 ngelkind (https://github.com/ngelkind/typeracer-monkeytype)
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+@font-face {
+  font-family: "MT Roboto Mono";
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/RobotoMono.woff2") format("woff2");
+  font-weight: 100 700;
+  font-display: block;
+}
+
+/* serika_dark */
+#mt-overlay {
+  --mt-bg: #323437;
+  --mt-main: #e2b714;
+  --mt-caret: #e2b714;
+  --mt-sub: #646669;
+  --mt-text: #d1d0c5;
+  --mt-error: #ca4754;
+  --mt-error-extra: #7e2a33;
+
+  --mt-font-size: 28px;
+  --mt-line-height: 1.5em;
+
+  position: relative;
+  padding: 18px 20px 22px;
+  background: var(--mt-bg);
+  border-radius: 8px;
+  font-family: "MT Roboto Mono", "Roboto Mono", ui-monospace, monospace;
+  color: var(--mt-sub);
+  cursor: text;
+  user-select: none;
+}
+
+/* TypeRacer's own card: keep it in the DOM (its logic runs there), just out of sight */
+.mt-card {
+  position: relative !important;
+  background: var(--mt-bg, #323437) !important;
+  border-color: #2c2e31 !important;
+  padding: 0 !important;
+}
+.mt-hidden {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+#mt-overlay .mt-stats {
+  display: flex;
+  gap: 1.2em;
+  height: 1.4em;
+  font-size: calc(var(--mt-font-size) * 0.8);
+  color: var(--mt-main);
+  margin-bottom: 0.2em;
+}
+#mt-overlay .mt-stats .mt-mode {
+  margin-left: auto;
+  font-size: 0.55em;
+  align-self: center;
+  color: var(--mt-sub);
+}
+
+#mt-overlay .mt-viewport {
+  position: relative;
+  font-size: var(--mt-font-size);
+  line-height: var(--mt-line-height);
+  height: calc(var(--mt-line-height) * 3);
+  overflow: hidden;
+}
+#mt-overlay .mt-words {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  transition: transform 120ms ease;
+}
+#mt-overlay .mt-word {
+  margin: 0 0.3em 0 0;
+  white-space: nowrap;
+}
+#mt-overlay .mt-word > span { color: var(--mt-sub); }
+#mt-overlay .mt-word > span.c { color: var(--mt-text); }
+#mt-overlay .mt-word > span.i { color: var(--mt-error); }
+#mt-overlay .mt-word > span.x { color: var(--mt-error-extra); }
+#mt-overlay .mt-word.err { text-decoration: underline var(--mt-error); text-underline-offset: 0.2em; }
+
+#mt-overlay .mt-caret {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.1em;
+  height: 1.2em;
+  margin-top: 0.15em;
+  border-radius: 0.05em;
+  background: var(--mt-caret);
+  transition: transform 90ms ease-out;
+  will-change: transform;
+}
+#mt-overlay.mt-idle .mt-caret { animation: mt-blink 1s step-end infinite; }
+@keyframes mt-blink { 50% { opacity: 0; } }
+
+#mt-overlay.mt-blurred .mt-viewport { filter: blur(4px); opacity: 0.4; }
+#mt-overlay .mt-focus-msg {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--mt-text);
+  z-index: 2;
+}
+#mt-overlay.mt-blurred .mt-focus-msg { display: flex; }
+
+#mt-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: #2c2e31;
+  color: #e2b714;
+  font: 14px "MT Roboto Mono", ui-monospace, monospace;
+  z-index: 2147483647;
+  pointer-events: none;
+  transition: opacity 200ms;
+}
+
+/* ---------- full-screen mode (Option+F) ----------
+   TypeRacer's race card (status row, cars, text card) is pinned over the whole
+   window: a compact track on top, Monkeytype-size words filling the rest. */
+html.mt-full { overflow: hidden !important; }
+html.mt-full .mt-stage {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483000 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #323437 !important;
+  color: #646669 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 20px max(32px, 4vw) 32px !important;
+  overflow: hidden !important;
+  font-family: "MT Roboto Mono", "Roboto Mono", ui-monospace, monospace;
+}
+/* status row ("Go!", countdown, timer) */
+html.mt-full .mt-stage > :first-child {
+  color: #646669 !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+}
+html.mt-full .mt-stage > :first-child * { color: inherit !important; }
+/* the race track: small, dimmed, themed */
+html.mt-full .mt-stage > :nth-child(2):not(.mt-card) {
+  zoom: 0.7;
+  opacity: 0.85;
+  flex: none;
+}
+html.mt-full .mt-stage > :nth-child(2):not(.mt-card) * {
+  color: #646669 !important;
+  border-color: #45474a !important;
+}
+html.mt-full .mt-stage > :nth-child(2):not(.mt-card) .bg-white\/80 {
+  background: transparent !important;
+}
+/* the typing area takes the rest, words vertically centred like Monkeytype */
+html.mt-full .mt-stage > .mt-card {
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+html.mt-full #mt-overlay {
+  background: transparent;
+  padding: 0;
+  --mt-line-height: 1.6em;
+}
+html.mt-full #mt-overlay .mt-word { margin-right: 0.5em; }
+html.mt-full #mt-overlay .mt-caret { margin-top: 0.2em; }
+html.mt-full #mt-overlay .mt-stats {
+  font-size: calc(var(--mt-font-size) * 0.6);
+  margin-bottom: 0.3em;
+}
+html.mt-full #mt-overlay .mt-stats .mt-mode { font-size: 0.45em; }
+html.mt-full #mt-overlay .mt-focus-msg { font-size: calc(var(--mt-font-size) * 0.4); }
