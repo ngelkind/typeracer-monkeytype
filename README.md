@@ -14,6 +14,7 @@ If you type faster on Monkeytype than on TypeRacer, this is for you.
 - **Three display modes**: pure Monkeytype focus mode, full screen with a compact race track, or a classic box inside the TypeRacer page
 - **Live WPM and word progress** in Monkeytype yellow
 - **Adjustable font size** (default 54px)
+- **Settings popup**: click the extension icon to pick the mode, text size and stop on letter
 - **Stop on letter** mode, like Monkeytype's "stop on error: letter"
 - Runs on any race page on play.typeracer.com and picks up each new race automatically
 - **Fair play**: your keystrokes go into TypeRacer's own input box. The extension never types for you or sends fake key events. It only changes how the race looks.
@@ -29,9 +30,15 @@ The extension isn't on the Chrome Web Store yet. Install it from source in about
 
 Other Chromium browsers (Edge, Brave, Opera, Arc) should work the same way.
 
+## Settings
+
+Click the extension icon in the Chrome toolbar (pin it from the puzzle piece menu) to change the display mode, text size and stop on letter. Changes apply instantly, even in the middle of a race.
+
+<img src="docs/popup.png" alt="Monkeytype for TypeRacer settings popup" width="320">
+
 ## Display modes
 
-Press `Alt + F` to switch between them. Your choice is saved.
+Pick one in the popup or press `Alt + F` to switch. Your choice is saved.
 
 | Mode | What you see |
 |---|---|
@@ -63,6 +70,9 @@ TypeRacer won't accept a word until it's typed correctly, and the extension does
 
 **It doesn't show up on a race.**
 Reload the TypeRacer tab after installing or updating the extension.
+
+**Where are the settings?**
+Click the extension icon in the toolbar. If you don't see it, open the puzzle piece menu and pin "Monkeytype for TypeRacer".
 
 **Can I change the theme colors?**
 Yes. Edit the variables at the top of `extension/monkey.css`, then reload the extension.

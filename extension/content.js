@@ -423,6 +423,17 @@
     setTimeout(() => { checkQueued = false; check(); }, 100);
   });
 
+  // Settings changed in the toolbar popup (or another tab): apply them live.
+  try {
+    chrome.storage.onChanged.addListener((changes, area) => {
+      if (area !== "local") return;
+      for (const [key, { newValue }] of Object.entries(changes)) {
+        if (key in settings && key !== "enabled" && newValue !== undefined) settings[key] = newValue;
+      }
+      if (race) applyLayout();
+    });
+  } catch {}
+
   window.addEventListener("resize", () => { if (race) { race.scrollY = -1; schedule(); } });
 
   setInterval(() => race && updateStats(currentWordStart(race.textEl, race.text.length)), 250);

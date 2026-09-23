@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- Monkeytype for TypeRacer
+     Copyright (C) 2026 ngelkind (https://github.com/ngelkind/typeracer-monkeytype)
+     SPDX-License-Identifier: AGPL-3.0-only -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <span class="logo">monkeytype</span><span class="for">for typeracer</span>
+  </header>
+
+  <section>
+    <h2>mode</h2>
+    <div class="group" id="mode">
+      <button data-value="focus">focus</button>
+      <button data-value="full">full</button>
+      <button data-value="classic">classic</button>
+    </div>
+    <p class="hint" id="mode-hint"></p>
+  </section>
+
+  <section>
+    <h2>text size</h2>
+    <div class="size">
+      <button id="size-down" aria-label="smaller">&minus;</button>
+      <input type="range" id="size" min="20" max="110" step="2">
+      <button id="size-up" aria-label="bigger">+</button>
+      <span id="size-value"></span>
+    </div>
+    <p class="hint">used in focus and full mode</p>
+  </section>
+
+  <section>
+    <h2>stop on letter</h2>
+    <div class="group" id="stopOnLetter">
+      <button data-value="false">off</button>
+      <button data-value="true">on</button>
+    </div>
+    <p class="hint">wrong keys are not entered</p>
+  </section>
+
+  <footer>
+    <p><kbd>alt</kbd> <kbd>f</kbd> mode &middot; <kbd>alt</kbd> <kbd>=</kbd>/<kbd>-</kbd> size &middot; <kbd>alt</kbd> <kbd>m</kbd> hide</p>
+    <a href="https://github.com/ngelkind/typeracer-monkeytype" target="_blank">github.com/ngelkind/typeracer-monkeytype</a>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

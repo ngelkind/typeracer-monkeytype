@@ -1,0 +1,74 @@
+/* Monkeytype for TypeRacer
+ * Copyright (C) 2026 ngelkind (https://github.com/ngelkind/typeracer-monkeytype)
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+@font-face {
+  font-family: "MT Roboto Mono";
+  src: url("fonts/RobotoMono.woff2") format("woff2");
+  font-weight: 100 700;
+}
+
+:root {
+  --bg: #323437;
+  --sub-alt: #2c2e31;
+  --main: #e2b714;
+  --sub: #646669;
+  --text: #d1d0c5;
+}
+
+body {
+  box-sizing: border-box;
+  width: 320px;
+  margin: 0;
+  padding: 16px 18px 14px;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px "MT Roboto Mono", ui-monospace, monospace;
+}
+
+header { margin-bottom: 14px; }
+.logo { color: var(--text); font-size: 20px; }
+.for { color: var(--sub); font-size: 12px; margin-left: 6px; }
+
+section { margin-bottom: 14px; }
+h2 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--sub);
+}
+
+.group { display: flex; gap: 6px; }
+button {
+  flex: 1;
+  padding: 7px 0;
+  border: 0;
+  border-radius: 6px;
+  background: var(--sub-alt);
+  color: var(--sub);
+  font: inherit;
+  cursor: pointer;
+  transition: color 120ms, background 120ms;
+}
+button:hover { color: var(--text); }
+button.active { background: var(--main); color: var(--bg); }
+
+.size { display: flex; align-items: center; gap: 8px; }
+.size button { flex: none; width: 30px; }
+.size input { flex: 1; accent-color: var(--main); }
+#size-value { width: 38px; text-align: right; color: var(--main); }
+
+.hint { margin: 5px 0 0; font-size: 11px; color: var(--sub); min-height: 1em; }
+
+footer { border-top: 1px solid var(--sub-alt); padding-top: 10px; font-size: 11px; color: var(--sub); }
+footer p { margin: 0 0 6px; }
+kbd {
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--sub-alt);
+  color: var(--text);
+  font: inherit;
+}
+a { color: var(--sub); }
+a:hover { color: var(--main); }
