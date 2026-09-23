@@ -11,7 +11,7 @@ If you type faster on Monkeytype than on TypeRacer, this is for you.
 - **Monkeytype look and feel on TypeRacer**: serika dark colors, Roboto Mono, large 3-line text that scrolls one line at a time
 - **Smooth caret** that blinks when you stop typing
 - **Per-letter feedback**: correct, wrong and extra letters colored like Monkeytype, with the current mistake underlined
-- **Full-screen race mode**: the typing area takes the whole window, and the race track with cars, names, WPM and countdown sits in a compact strip on top
+- **Three display modes**: pure Monkeytype focus mode, full screen with a compact race track, or a classic box inside the TypeRacer page
 - **Live WPM and word progress** in Monkeytype yellow
 - **Adjustable font size** (default 54px)
 - **Stop on letter** mode, like Monkeytype's "stop on error: letter"
@@ -29,19 +29,29 @@ The extension isn't on the Chrome Web Store yet. Install it from source in about
 
 Other Chromium browsers (Edge, Brave, Opera, Arc) should work the same way.
 
+## Display modes
+
+Press `Alt + F` to switch between them. Your choice is saved.
+
+| Mode | What you see |
+|---|---|
+| **focus** | Pure Monkeytype. Only the words, your live WPM, progress and a small countdown or race clock. No TypeRacer UI until you finish, then the TypeRacer results appear. |
+| **full** (default) | Full-screen Monkeytype text with TypeRacer's race track (cars, names, WPM, countdown) in a compact strip on top. |
+| **classic** | A Monkeytype-style box in place of TypeRacer's text, with the rest of the TypeRacer page unchanged. |
+
 ## Keyboard shortcuts
 
 On Mac, `Alt` is the `Option` key.
 
 | Shortcut | Action |
 |---|---|
-| `Alt + M` | Turn the Monkeytype skin on or off |
-| `Alt + F` | Switch between full-screen mode and the in-page box |
+| `Alt + M` | Hide or show the Monkeytype skin on this page |
+| `Alt + F` | Next display mode: classic, full, focus |
 | `Alt + =` / `Alt + -` | Make the text bigger or smaller |
 | `Alt + L` | Toggle stop on letter (wrong keys are not entered) |
 | any key | Focus the race again after clicking away |
 
-Settings are saved between races.
+Mode, font size and stop on letter are saved between races. The skin always starts on when a page loads.
 
 ## FAQ
 
@@ -52,7 +62,7 @@ No. You type every character yourself into TypeRacer's normal input. The extensi
 TypeRacer won't accept a word until it's typed correctly, and the extension doesn't change race rules. Backspace and fix it, as with Monkeytype's "stop on error: word".
 
 **It doesn't show up on a race.**
-Reload the TypeRacer tab after installing or updating the extension, and check that the skin isn't switched off with `Alt + M`.
+Reload the TypeRacer tab after installing or updating the extension.
 
 **Can I change the theme colors?**
 Yes. Edit the variables at the top of `extension/monkey.css`, then reload the extension.

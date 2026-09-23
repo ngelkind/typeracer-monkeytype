@@ -10,7 +10,12 @@
 (() => {
   "use strict";
 
-  const settings = { enabled: true, stopOnLetter: false, full: true, fontSize: 54 };
+  // Display modes, cycled with Alt+F:
+  //   classic: Monkeytype box inside the normal TypeRacer page
+  //   full:    full screen, compact TypeRacer track on top
+  //   focus:   full screen, no TypeRacer UI until the race is over
+  const MODES = ["classic", "full", "focus"];
+  const settings = { enabled: true, stopOnLetter: false, mode: "full", fontSize: 54 };
   const FONT_MIN = 20, FONT_MAX = 110;
 
   let race = null;        // attached race state, see attach()
@@ -23,6 +28,9 @@
     try {
       chrome.storage.local.get(settings, (s) => {
         Object.assign(settings, s);
+        // Migrate the old on/off full-screen flag.
+        if (!MODES.includes(settings.mode)) settings.mode = s.full === false ? "classic" : "full";
+        delete settings.full;
         // On/off (Alt+M) only lasts for the current page, so the skin can't get stuck off.
         settings.enabled = true;
         cb();
@@ -91,7 +99,7 @@
     overlay.id = "mt-overlay";
     overlay.innerHTML =
       '<div class="mt-stats"><span class="mt-wpm"></span><span class="mt-prog"></span>' +
-      '<span class="mt-mode"></span></div>' +
+      '<span class="mt-status"></span><span class="mt-mode"></span></div>' +
       '<div class="mt-viewport"><div class="mt-focus-msg">click here or press any key to focus</div>' +
       '<div class="mt-words"><div class="mt-caret"></div></div></div>';
 
@@ -126,6 +134,7 @@
       wpmEl: overlay.querySelector(".mt-wpm"),
       progEl: overlay.querySelector(".mt-prog"),
       modeEl: overlay.querySelector(".mt-mode"),
+      statusEl: overlay.querySelector(".mt-status"),
     };
   }
 
@@ -166,8 +175,10 @@
 
   function applyLayout() {
     if (!race) return;
-    document.documentElement.classList.toggle("mt-full", settings.full);
-    race.overlay.style.setProperty("--mt-font-size", settings.full ? settings.fontSize + "px" : "");
+    const big = settings.mode !== "classic";
+    document.documentElement.classList.toggle("mt-full", big);
+    document.documentElement.classList.toggle("mt-focus", settings.mode === "focus");
+    race.overlay.style.setProperty("--mt-font-size", big ? settings.fontSize + "px" : "");
     race.scrollY = -1;
     render();
   }
@@ -181,7 +192,7 @@
     race.inputEl.removeEventListener("blur", race.onFocus);
     race.overlay.remove();
     race.stage.classList.remove("mt-stage");
-    document.documentElement.classList.remove("mt-full");
+    document.documentElement.classList.remove("mt-full", "mt-focus");
     race.card.classList.remove("mt-card");
     for (const ch of race.card.children) ch.classList.remove("mt-hidden");
     race = null;
@@ -308,6 +319,18 @@
     r.progEl.textContent = `${Math.max(0, done)}/${r.wordEls.length}`;
     r.wpmEl.textContent = readWpm() ?? "";
     r.modeEl.textContent = settings.stopOnLetter ? "stop on letter" : "";
+    r.statusEl.textContent = settings.mode === "focus" ? raceStatus() : "";
+  }
+
+  // Focus mode hides TypeRacer's status row, so show its countdown / race clock
+  // ourselves: "starts in :06" before the start, then the clock ("2:41").
+  function raceStatus() {
+    const row = race.stage && race.stage.firstElementChild;
+    if (!row || row === race.card) return "";
+    const text = row.textContent.replace(/\s+/g, " ").trim();
+    const clock = (text.match(/\d*:\d\d/) || [""])[0];
+    if (/about to start|get ready|waiting/i.test(text)) return clock ? `starts in ${clock}` : "waiting";
+    return clock;
   }
 
   // TypeRacer's own live WPM label ("67 WPM") from the race-track header above the card.
@@ -356,10 +379,10 @@
     }
     if (e.altKey && e.code === "KeyF") {
       e.preventDefault();
-      settings.full = !settings.full;
+      settings.mode = MODES[(MODES.indexOf(settings.mode) + 1) % MODES.length];
       saveSettings();
       applyLayout();
-      toast(`full screen: ${settings.full ? "on" : "off"}`);
+      toast(`mode: ${settings.mode}`);
       return;
     }
     if (e.altKey && (e.code === "Equal" || e.code === "Minus")) {

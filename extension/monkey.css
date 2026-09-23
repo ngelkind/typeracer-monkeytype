@@ -133,7 +133,7 @@
   transition: opacity 200ms;
 }
 
-/* ---------- full-screen mode (Option+F) ----------
+/* ---------- full and focus modes (Alt+F) ----------
    TypeRacer's race card (status row, cars, text card) is pinned over the whole
    window: a compact track on top, Monkeytype-size words filling the rest. */
 html.mt-full { overflow: hidden !important; }
@@ -195,3 +195,7 @@ html.mt-full #mt-overlay .mt-stats {
 }
 html.mt-full #mt-overlay .mt-stats .mt-mode { font-size: 0.45em; }
 html.mt-full #mt-overlay .mt-focus-msg { font-size: calc(var(--mt-font-size) * 0.4); }
+
+/* focus mode: nothing from TypeRacer on screen, only the words */
+html.mt-focus .mt-stage > :not(.mt-card) { display: none !important; }
+#mt-overlay .mt-status { color: var(--mt-sub); }
